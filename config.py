@@ -1,9 +1,9 @@
 TOKEN_API = "6622399542:AAG7ts9aN2D65709MPYEa1aYAVkT77I5abo"
 
 HELP_INFO = """
-/start - начало работы с ботом
-/help - список команд
-/description - описание бота
+<b>/start</b> - начало работы с ботом
+<b>/help</b> - список команд
+<b>/description</b> - описание бота
 """
 
 DESCRIPTION_INFO = """

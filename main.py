@@ -12,12 +12,14 @@ async def on_startup(_):
 @dp.message_handler(commands=['start'])
 async def start_command(message: types.Message):
     await message.answer(text="<em>Добро пожаловать на наш Телеграмм-канал!</em>", parse_mode="HTML")
+    await bot.send_sticker(message.from_user.id,
+                           sticker="CAACAgIAAxkBAAEKLEpk73VCGsVsdN5T3S_FqvBtg6PSpwACtgkAAnlc4gnGTnKNypclSDAE")
     await message.delete()
 
 
 @dp.message_handler(commands=['help'])
 async def help_command(message: types.Message):
-    await message.answer(text=HELP_INFO)
+    await message.answer(text=HELP_INFO, parse_mode="HTML")
 
 
 @dp.message_handler(commands=['description'])
@@ -31,7 +33,7 @@ async def hello_echo_command(message: types.Message):
         await message.answer(text=message.text)
     if message.text.lower() in ["спасибо", "thanks, thank you"]:
         await message.reply(text="❤️")
-        await bot.send_sticker(message.from_user.id,
+        await bot.send_sticker(message.chat.id,
                                sticker="CAACAgIAAxkBAAEKLEZk73F90AhWbUEQFibnOaw98AmziwACQAEAAooSqg6FLrYwmvbwXzAE")
     if message.text == "🐙":
         await message.reply(text="❤️")
