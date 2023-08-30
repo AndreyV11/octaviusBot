@@ -1,21 +1,15 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton
-from config import TOKEN_API, HELP_INFO, DESCRIPTION_INFO, HELLO_USER
+from aiogram.types import ReplyKeyboardRemove
 
+from config import TOKEN_API, HELP_INFO, DESCRIPTION_INFO, HELLO_USER
+from keyboards import kb, ikb
 
 bot = Bot(TOKEN_API)
 dp = Dispatcher(bot)
 
-# клавиатура, resize_keyboard изменяет размер на оптимальный, one_time_keyboard сворачивает клавиатура после нажатия
-kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
-btn1 = KeyboardButton('/help')
-btn2 = KeyboardButton('/description')
-btn3 = KeyboardButton('/photo')
-kb.add(btn1).insert(btn2).add(btn3)     # add - добавить в строку, insert - добавить в столбец
-
 
 async def on_startup(_):
-    print("Start is successfully")
+    print("Start...[100%] SUCCESSFULLY")
 
 
 # функция приветствия, отправка стикера, message.from_user.id -> отправляет сообщение в чат пользователю
@@ -53,12 +47,20 @@ async def photo_command(message: types.Message):
     await message.delete()
 
 
+# инлайн клавиатура и плейлисты
+@dp.message_handler(commands=["links"])
+async def links_command(message: types.Message):
+    await message.answer(text="Полезная подборка материала",
+                         reply_markup=ikb)
+    await message.delete()
+
+
 # отправка сообщений в зависимомти от сообщения пользователя
 @dp.message_handler()
 async def hello_echo_command(message: types.Message):
     if message.text.lower() in HELLO_USER:
         await message.answer(text=message.text)
-    if message.text.lower() in ["спасибо", "thanks, thank you"]:
+    if message.text.lower() in ["спасибо", "thanks", "thank you"]:
         await message.reply(text="❤️")
         await bot.send_sticker(message.chat.id,
                                sticker="CAACAgIAAxkBAAEKLEZk73F90AhWbUEQFibnOaw98AmziwACQAEAAooSqg6FLrYwmvbwXzAE")
