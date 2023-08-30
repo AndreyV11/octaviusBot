@@ -9,10 +9,13 @@ btn2 = KeyboardButton('/description')
 btn3 = KeyboardButton('/photo')
 btn4 = KeyboardButton('🐙')
 btn5 = KeyboardButton('/links')
-kb.add(btn1).insert(btn2).add(btn3).insert(btn4).add(btn5)     # add - добавить в строку, insert - добавить в столбец
+btn6 = KeyboardButton('/votes')
+# add - добавить в строку, insert - добавить в столбец
+kb.add(btn1).insert(btn2).add(btn3).insert(btn4).add(btn5).insert(btn6)
 
 
 # инлайн-клавиатура, находится под сообщением, обновляется без вызова новых команд и сообщений
+# ---полезная подборка материала---
 ikb = InlineKeyboardMarkup(row_width=2)
 ibtn1 = InlineKeyboardButton(text="TlgBot",
                             url="https://youtube.com/playlist?list=PLe-iIMbo5JOJm6DRTjhleHojroS-Bbocr&si=aA80DEybDAX5fF9n")
@@ -27,3 +30,11 @@ ibtn5 = InlineKeyboardButton(text="Django",
 ibtn6 = InlineKeyboardButton(text="Patterns",
                             url="https://refactoringguru.cn/design-patterns/python")
 ikb.add(ibtn1, ibtn2, ibtn3, ibtn4, ibtn5, ibtn6)
+
+
+# ---голосование настроение---
+ikb_vote = InlineKeyboardMarkup(row_width=2)
+ibtn_v1 = InlineKeyboardButton(text="Супергуд🕺", callback_data="good")
+ibtn_v2 = InlineKeyboardButton(text="Среднячком👌", callback_data="normal")
+ibtn_v3 = InlineKeyboardButton(text="Press F...😣", callback_data="bad")
+ikb_vote.add(ibtn_v1).add(ibtn_v2).add(ibtn_v3)

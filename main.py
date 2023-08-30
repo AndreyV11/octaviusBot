@@ -1,8 +1,8 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardRemove
+from aiogram.types import ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import TOKEN_API, HELP_INFO, DESCRIPTION_INFO, HELLO_USER
-from keyboards import kb, ikb
+from keyboards import kb, ikb, ikb_vote
 
 bot = Bot(TOKEN_API)
 dp = Dispatcher(bot)
@@ -36,14 +36,15 @@ async def help_command(message: types.Message):
 # описание бота, message.answer отвечает туда, откуда пришло сообщение
 @dp.message_handler(commands=['description'])
 async def description_command(message: types.Message):
-    await message.answer(text=DESCRIPTION_INFO)
+    await bot.send_message(chat_id=message.from_user.id, text=DESCRIPTION_INFO)
 
 
 # отправка изображения, доступно как по интернет-ссылке, так и из локальной памяти, message.chat.id - в групповой чат
 @dp.message_handler(commands=["photo"])
 async def photo_command(message: types.Message):
     await bot.send_photo(chat_id=message.chat.id,
-                         photo="https://i.pinimg.com/originals/1e/b3/78/1eb3786697979899fadbd770f05ba9d5.png")
+                         photo="https://i.pinimg.com/originals/1e/b3/78/1eb3786697979899fadbd770f05ba9d5.png",
+                         caption="фото админа")
     await message.delete()
 
 
@@ -53,6 +54,25 @@ async def links_command(message: types.Message):
     await message.answer(text="Полезная подборка материала",
                          reply_markup=ikb)
     await message.delete()
+
+
+# голосование
+@dp.message_handler(commands=["votes"])
+async def votes_command(message: types.Message):
+    await bot.send_message(chat_id=message.chat.id,
+                           text="Как настроение?",
+                           reply_markup=ikb_vote)
+    await message.delete()
+
+
+# голосование
+@dp.callback_query_handler()
+async def votes_callback(callback: types.CallbackQuery):
+    if callback.data == "good":
+        await callback.answer("Хорош, так держать!👍")
+    if callback.data == "normal":
+        await callback.answer("Скоро станет лучше, не унывай!🙌")
+    await callback.answer("Держись, ты все сможешь!💪")
 
 
 # отправка сообщений в зависимомти от сообщения пользователя
