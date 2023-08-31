@@ -26,3 +26,17 @@ ARR_MEME = [
     "https://i.pinimg.com/736x/66/aa/c9/66aac9ac96bb7e83783400282ed38d71.jpg",
     "https://i.pinimg.com/originals/b8/79/d5/b879d50f089e3f3b23eaf5a4f614350d.jpg"
     ]
+
+
+CAPTION = [
+   "на тестостероне",
+   "фуфуфу",
+   "грустный момент",
+   "доброе утро, севодня прекрасный день",
+   "хехехе",
+   "заякорился",
+   "крутяк"
+   ]
+
+
+MEMES = dict(zip(ARR_MEME, CAPTION))

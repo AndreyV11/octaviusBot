@@ -2,8 +2,8 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove
 from aiogram.dispatcher.filters import Text
 
-from config import TOKEN_API, HELP_INFO, DESCRIPTION_INFO, HELLO_USER, ARR_MEME
-from keyboards import kb, ikb, ikb_vote, meme_kb
+from config import TOKEN_API, HELP_INFO, DESCRIPTION_INFO, HELLO_USER, MEMES
+from keyboards import kb, ikb, ikb_vote, meme_kb, ikb_meme
 import random
 
 
@@ -13,6 +13,15 @@ dp = Dispatcher(bot)
 
 async def on_startup(_):
     print("Start...[100%] SUCCESSFULLY")
+
+
+async def send_random(message: types.Message):
+    random_meme = random.choice(list(MEMES.keys()))
+    await bot.send_photo(chat_id=message.chat.id,
+                         photo=random_meme,
+                         caption=MEMES[random_meme],
+                         reply_markup=ikb_meme)
+    await message.delete()
 
 
 # функция приветствия, отправка стикера, message.from_user.id -> отправляет сообщение в чат пользователю
@@ -68,16 +77,6 @@ async def votes_command(message: types.Message):
     await message.delete()
 
 
-# голосование
-@dp.callback_query_handler()
-async def votes_callback(callback: types.CallbackQuery):
-    if callback.data == "good":
-        await callback.answer("Хорош, так держать!👍")
-    if callback.data == "normal":
-        await callback.answer("Скоро станет лучше, не унывай!🙌")
-    await callback.answer("Держись, ты все сможешь!💪")
-
-
 @dp.message_handler(Text(equals="Random meme"))
 async def random_picture_command(message: types.Message):
     await message.answer(text="Мемы для ценителей прекрасного",
@@ -87,9 +86,7 @@ async def random_picture_command(message: types.Message):
 
 @dp.message_handler(Text(equals="Meme"))
 async def meme_command(message: types.Message):
-    await bot.send_photo(chat_id=message.chat.id,
-                         photo=random.choice(ARR_MEME))
-    await message.delete()
+    await send_random(message)
 
 
 @dp.message_handler(Text(equals="Главное меню"))
@@ -110,6 +107,24 @@ async def hello_echo_command(message: types.Message):
                                sticker="CAACAgIAAxkBAAEKLEZk73F90AhWbUEQFibnOaw98AmziwACQAEAAooSqg6FLrYwmvbwXzAE")
     if message.text == "🐙":
         await message.reply(text="❤️")
+
+
+# колбэки
+@dp.callback_query_handler()
+async def call_callback(callback: types.CallbackQuery):
+    if callback.data == "good":
+        await callback.answer("Хорош, так держать!👍")
+    if callback.data == "normal":
+        await callback.answer("Скоро станет лучше, не унывай!🙌")
+    if callback.data == "bad":
+        await callback.answer("Держись, ты все сможешь!💪")
+    if callback.data == "like":
+        await callback.answer(text="😻")
+    if callback.data == "dislike":
+        await callback.answer(text="😿")
+    if callback.data == "next":
+        await send_random(callback.message)
+        await callback.answer()
 
 
 ## отправка геолокации

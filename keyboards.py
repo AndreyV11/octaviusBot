@@ -46,3 +46,15 @@ meme_kb = ReplyKeyboardMarkup(resize_keyboard=True)
 mbtn1 = KeyboardButton(text="Meme")
 mbtn2 = KeyboardButton(text="Главное меню")
 meme_kb.add(mbtn1, mbtn2)
+
+
+# ---инлайн-клавиатура мемы---
+ikb_meme = InlineKeyboardMarkup(row_width=2)
+ibtn_meme1 = InlineKeyboardButton(text="❤️",
+                                  callback_data="like")
+ibtn_meme2 = InlineKeyboardButton(text="💔",
+                                  callback_data="dislike")
+ibtn_meme3 = InlineKeyboardButton(text="следующий",
+                                  callback_data="next")
+ikb_meme.add(ibtn_meme1, ibtn_meme2).add(ibtn_meme3)
+
