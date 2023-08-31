@@ -1,8 +1,11 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import ReplyKeyboardRemove
+from aiogram.dispatcher.filters import Text
 
-from config import TOKEN_API, HELP_INFO, DESCRIPTION_INFO, HELLO_USER
-from keyboards import kb, ikb, ikb_vote
+from config import TOKEN_API, HELP_INFO, DESCRIPTION_INFO, HELLO_USER, ARR_MEME
+from keyboards import kb, ikb, ikb_vote, meme_kb
+import random
+
 
 bot = Bot(TOKEN_API)
 dp = Dispatcher(bot)
@@ -73,6 +76,27 @@ async def votes_callback(callback: types.CallbackQuery):
     if callback.data == "normal":
         await callback.answer("Скоро станет лучше, не унывай!🙌")
     await callback.answer("Держись, ты все сможешь!💪")
+
+
+@dp.message_handler(Text(equals="Random meme"))
+async def random_picture_command(message: types.Message):
+    await message.answer(text="Мемы для ценителей прекрасного",
+                         reply_markup=meme_kb)
+    await message.delete()
+
+
+@dp.message_handler(Text(equals="Meme"))
+async def meme_command(message: types.Message):
+    await bot.send_photo(chat_id=message.chat.id,
+                         photo=random.choice(ARR_MEME))
+    await message.delete()
+
+
+@dp.message_handler(Text(equals="Главное меню"))
+async def open_menu_command(message: types.Message):
+    await message.answer(text="Добро пожаловать в главное меню!",
+                         reply_markup=kb)
+    await message.delete()
 
 
 # отправка сообщений в зависимомти от сообщения пользователя

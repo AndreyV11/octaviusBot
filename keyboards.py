@@ -10,8 +10,9 @@ btn3 = KeyboardButton('/photo')
 btn4 = KeyboardButton('🐙')
 btn5 = KeyboardButton('/links')
 btn6 = KeyboardButton('/votes')
+btn7 = KeyboardButton('Random meme')
 # add - добавить в строку, insert - добавить в столбец
-kb.add(btn1).insert(btn2).add(btn3).insert(btn4).add(btn5).insert(btn6)
+kb.add(btn1, btn2).add(btn3, btn4).add(btn5, btn6).add(btn7)
 
 
 # инлайн-клавиатура, находится под сообщением, обновляется без вызова новых команд и сообщений
@@ -38,3 +39,10 @@ ibtn_v1 = InlineKeyboardButton(text="Супергуд🕺", callback_data="good"
 ibtn_v2 = InlineKeyboardButton(text="Среднячком👌", callback_data="normal")
 ibtn_v3 = InlineKeyboardButton(text="Press F...😣", callback_data="bad")
 ikb_vote.add(ibtn_v1).add(ibtn_v2).add(ibtn_v3)
+
+
+# ---выбор мемов---
+meme_kb = ReplyKeyboardMarkup(resize_keyboard=True)
+mbtn1 = KeyboardButton(text="Meme")
+mbtn2 = KeyboardButton(text="Главное меню")
+meme_kb.add(mbtn1, mbtn2)
